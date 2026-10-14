@@ -10,6 +10,8 @@ jobs:
   build-ipa:
     runs-on: macos-15
     timeout-minutes: 60
+    permissions:
+      contents: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -58,6 +60,20 @@ jobs:
             grep -E "error: " build.log | sort -u | head -80 || echo "(no explicit error lines)"
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Push build errors to build-errors branch
+        if: failure()
+        run: |
+          set -euo pipefail
+          grep -E "error: |ARCHIVE FAILED" build.log | sort -u > build-errors.log || true
+          [ -s build-errors.log ] || tail -n 150 build.log > build-errors.log
+          git config user.name "ci-bot"
+          git config user.email "ci-bot@users.noreply.github.com"
+          git fetch origin main --depth=1
+          git checkout -B build-errors origin/main
+          git add -f build-errors.log
+          git commit -m "build errors $(date -u +%FT%TZ)"
+          git push origin build-errors --force
 
       - name: Package IPA
         run: |
