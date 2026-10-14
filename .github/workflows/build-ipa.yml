@@ -35,7 +35,7 @@ jobs:
 
       - name: Archive (unsigned, Release)
         run: |
-          set -euo pipefail
+          set -o pipefail
           chmod +x gradlew
           xcodebuild archive \
             -project DeepSeekHarnessMobile.xcodeproj \
@@ -47,7 +47,17 @@ jobs:
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGN_IDENTITY="" \
             DEVELOPMENT_TEAM="" \
-            | tail -n 40
+            2>&1 | tee build.log | tail -n 30
+
+      - name: Extract compile errors on failure
+        if: failure()
+        run: |
+          {
+            echo "## Compile errors"
+            echo '```'
+            grep -E "error: " build.log | sort -u | head -80 || echo "(no explicit error lines)"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Package IPA
         run: |

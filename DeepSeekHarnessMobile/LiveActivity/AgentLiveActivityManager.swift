@@ -4,8 +4,8 @@ import UIKit
 
 /// 将 Gateway 的会话事件串行投影为系统实时活动。
 /// 本地 ActivityKit 更新依赖 App 仍有后台执行时间；后续接入 APNs 时可复用相同状态模型。
-/// iOS 16.1 以下（无 Live Activities）通过 AgentLiveActivityFacade 静默降级。
-@available(iOS 16.1, *)
+/// iOS 17.0 以下（无 Live Activities）通过 AgentLiveActivityFacade 静默降级。
+@available(iOS 17.0, *)
 @MainActor
 final class AgentLiveActivityManager {
     static let shared = AgentLiveActivityManager()
@@ -943,7 +943,7 @@ final class AgentLiveActivityManager {
 /// 审批状态优先于同一工具调用随后到达的普通执行轨迹。
 /// Gateway 会先发送 approval/requested，随后仍可能补发一次 tool/command 进度；
 /// 后者不能把灵动岛从“等待审批”改回“正在执行”。
-@available(iOS 16.1, *)
+@available(iOS 17.0, *)
 enum AgentLiveActivityUpdatePolicy {
     static func allows(
         current: AgentActivityAttributes.ContentState?,
@@ -965,7 +965,7 @@ enum AgentLiveActivityUpdatePolicy {
 /// 只有首次进入某个需要用户处理的请求时才触发系统提醒。
 /// 同一 RPC 的重放、命令补全、标题刷新和保活更新只刷新卡片内容，
 /// 避免 ActivityKit 将每次内容更新都显示成一条新的灵动岛通知。
-@available(iOS 16.1, *)
+@available(iOS 17.0, *)
 enum AgentLiveActivityAlertPolicy {
     static func shouldAlert(
         current: AgentActivityAttributes.ContentState?,

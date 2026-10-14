@@ -2,7 +2,7 @@ import ActivityKit
 import Foundation
 
 /// 主 App 与 Widget Extension 共享的实时活动协议。
-@available(iOS 16.1, *)
+@available(iOS 17.0, *)
 struct AgentActivityAttributes: ActivityAttributes {
     struct ContentState: Codable, Hashable {
         /// 会话标题会在 Agent 启动后由主机重命名，因此必须放在可更新状态中。

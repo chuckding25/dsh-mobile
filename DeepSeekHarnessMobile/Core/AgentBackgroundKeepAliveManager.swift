@@ -21,9 +21,9 @@ protocol AgentLongRunningKeepAlive: AnyObject {
 final class AgentBackgroundKeepAliveManager: NSObject, AgentLongRunningKeepAlive {
     private static let logger = Logger(subsystem: "ai.dsh.mobile.ios", category: "agent-keepalive")
 
-    /// Live Activities 开关：iOS 16.1 以下一律视为不可用。
+    /// Live Activities 开关：iOS 17.0 以下一律视为不可用。
     private static var liveActivitiesEnabled: Bool {
-        if #available(iOS 16.1, *) {
+        if #available(iOS 17.0, *) {
             return ActivityAuthorizationInfo().areActivitiesEnabled
         }
         return false
@@ -193,7 +193,7 @@ final class AgentBackgroundKeepAliveManager: NSObject, AgentLongRunningKeepAlive
     }
 
     private var hasVisibleAgentLiveActivity: Bool {
-        if #available(iOS 16.1, *) {
+        if #available(iOS 17.0, *) {
             return !Activity<AgentActivityAttributes>.activities.isEmpty
         }
         return false

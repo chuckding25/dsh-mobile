@@ -1,23 +1,23 @@
 import Foundation
 
 /// Live Activity 的版本门面。
-/// iOS 16.1+ 把调用转发给 ActivityKit 实现；更低版本静默忽略，
+/// iOS 17.0+ 把调用转发给 ActivityKit 实现；更低版本静默忽略，
 /// 让主 App（部署目标 16.0）无需在每个调用点写 `#available`。
 @MainActor
 final class AgentLiveActivityFacade {
     static let shared = AgentLiveActivityFacade()
 
-    @available(iOS 16.1, *)
+    @available(iOS 17.0, *)
     private var impl: AgentLiveActivityManager? {
         AgentLiveActivityManager.shared
     }
 
     func applicationDidBecomeActive() {
-        if #available(iOS 16.1, *) { impl?.applicationDidBecomeActive() }
+        if #available(iOS 17.0, *) { impl?.applicationDidBecomeActive() }
     }
 
     func refreshActiveActivities() {
-        if #available(iOS 16.1, *) { impl?.refreshActiveActivities() }
+        if #available(iOS 17.0, *) { impl?.refreshActiveActivities() }
     }
 
     func sessionStarted(
@@ -27,7 +27,7 @@ final class AgentLiveActivityFacade {
         turn: Int?,
         sourceLabel: String? = nil
     ) {
-        if #available(iOS 16.1, *) {
+        if #available(iOS 17.0, *) {
             impl?.sessionStarted(gatewayID: gatewayID, sessionID: sessionID, title: title, turn: turn, sourceLabel: sourceLabel)
         }
     }
@@ -39,7 +39,7 @@ final class AgentLiveActivityFacade {
         step: Int?,
         sourceLabel: String? = nil
     ) {
-        if #available(iOS 16.1, *) {
+        if #available(iOS 17.0, *) {
             impl?.stepStarted(gatewayID: gatewayID, sessionID: sessionID, title: title, step: step, sourceLabel: sourceLabel)
         }
     }
@@ -54,7 +54,7 @@ final class AgentLiveActivityFacade {
         toolName: String? = nil,
         sourceLabel: String? = nil
     ) {
-        if #available(iOS 16.1, *) {
+        if #available(iOS 17.0, *) {
             impl?.progressUpdated(
                 gatewayID: gatewayID,
                 sessionID: sessionID,
@@ -75,7 +75,7 @@ final class AgentLiveActivityFacade {
         toolName: String?,
         sourceLabel: String? = nil
     ) {
-        if #available(iOS 16.1, *) {
+        if #available(iOS 17.0, *) {
             impl?.toolStarted(gatewayID: gatewayID, sessionID: sessionID, title: title, toolName: toolName, sourceLabel: sourceLabel)
         }
     }
@@ -87,7 +87,7 @@ final class AgentLiveActivityFacade {
         command: String?,
         sourceLabel: String? = nil
     ) {
-        if #available(iOS 16.1, *) {
+        if #available(iOS 17.0, *) {
             impl?.awaitingApproval(
                 gatewayID: gatewayID,
                 request: request,
@@ -105,7 +105,7 @@ final class AgentLiveActivityFacade {
         prompt: String?,
         sourceLabel: String? = nil
     ) {
-        if #available(iOS 16.1, *) {
+        if #available(iOS 17.0, *) {
             impl?.awaitingChoice(
                 gatewayID: gatewayID,
                 request: request,
@@ -123,7 +123,7 @@ final class AgentLiveActivityFacade {
         cancelled: Bool,
         title: String
     ) {
-        if #available(iOS 16.1, *) {
+        if #available(iOS 17.0, *) {
             impl?.choiceResolved(
                 gatewayID: gatewayID,
                 sessionID: sessionID,
@@ -140,7 +140,7 @@ final class AgentLiveActivityFacade {
         rpcID: String,
         command: String?
     ) {
-        if #available(iOS 16.1, *) {
+        if #available(iOS 17.0, *) {
             impl?.enrichApprovalCommand(
                 gatewayID: gatewayID,
                 sessionID: sessionID,
@@ -151,7 +151,7 @@ final class AgentLiveActivityFacade {
     }
 
     func sessionTitleUpdated(gatewayID: String, sessionID: String, title: String) {
-        if #available(iOS 16.1, *) {
+        if #available(iOS 17.0, *) {
             impl?.sessionTitleUpdated(gatewayID: gatewayID, sessionID: sessionID, title: title)
         }
     }
@@ -165,7 +165,7 @@ final class AgentLiveActivityFacade {
         command: String?,
         sourceLabel: String? = nil
     ) {
-        if #available(iOS 16.1, *) {
+        if #available(iOS 17.0, *) {
             impl?.approvalSubmitting(
                 gatewayID: gatewayID,
                 sessionID: sessionID,
@@ -185,7 +185,7 @@ final class AgentLiveActivityFacade {
         outcome: GatewayApprovalOutcome,
         title: String
     ) {
-        if #available(iOS 16.1, *) {
+        if #available(iOS 17.0, *) {
             impl?.approvalResolved(
                 gatewayID: gatewayID,
                 sessionID: sessionID,
@@ -204,7 +204,7 @@ final class AgentLiveActivityFacade {
         reason: String?,
         sourceLabel: String? = nil
     ) {
-        if #available(iOS 16.1, *) {
+        if #available(iOS 17.0, *) {
             impl?.approvalFailed(
                 gatewayID: gatewayID,
                 sessionID: sessionID,
@@ -223,7 +223,7 @@ final class AgentLiveActivityFacade {
         failed: Bool,
         sourceLabel: String? = nil
     ) {
-        if #available(iOS 16.1, *) {
+        if #available(iOS 17.0, *) {
             impl?.sessionEnded(
                 gatewayID: gatewayID,
                 sessionID: sessionID,
@@ -235,7 +235,7 @@ final class AgentLiveActivityFacade {
     }
 
     func reconcileSessions(gatewayID: String, runningBySessionID: [String: Bool]) {
-        if #available(iOS 16.1, *) {
+        if #available(iOS 17.0, *) {
             impl?.reconcileSessions(gatewayID: gatewayID, runningBySessionID: runningBySessionID)
         }
     }
