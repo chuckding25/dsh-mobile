@@ -1,0 +1,13 @@
+** ARCHIVE FAILED **
+/Users/runner/work/dsh-mobile/dsh-mobile/DeepSeekHarnessMobile/Views/ConversationView.swift:3318:64: error: instance member 'tertiary' cannot be used on type 'Color?'
+/Users/runner/work/dsh-mobile/dsh-mobile/DeepSeekHarnessMobile/Views/ConversationView.swift:3318:64: error: member 'tertiary' in 'Color?' produces result of type 'some ShapeStyle', but context expects 'Color?'
+/Users/runner/work/dsh-mobile/dsh-mobile/DeepSeekHarnessMobile/Views/ConversationView.swift:3389:45: error: instance member 'tertiary' cannot be used on type 'Color?'
+/Users/runner/work/dsh-mobile/dsh-mobile/DeepSeekHarnessMobile/Views/ConversationView.swift:3389:45: error: member 'tertiary' in 'Color?' produces result of type 'some ShapeStyle', but context expects 'Color?'
+/Users/runner/work/dsh-mobile/dsh-mobile/DeepSeekHarnessMobile/Views/ConversationView.swift:3468:49: error: instance member 'tertiary' cannot be used on type 'Color?'
+/Users/runner/work/dsh-mobile/dsh-mobile/DeepSeekHarnessMobile/Views/ConversationView.swift:3468:49: error: member 'tertiary' in 'Color?' produces result of type 'some ShapeStyle', but context expects 'Color?'
+/Users/runner/work/dsh-mobile/dsh-mobile/DeepSeekHarnessMobile/Views/ConversationView.swift:3845:39: error: instance member 'tertiary' cannot be used on type 'Color?'
+/Users/runner/work/dsh-mobile/dsh-mobile/DeepSeekHarnessMobile/Views/ConversationView.swift:3845:39: error: member 'tertiary' in 'Color?' produces result of type 'some ShapeStyle', but context expects 'Color?'
+/Users/runner/work/dsh-mobile/dsh-mobile/DeepSeekHarnessMobile/Views/ConversationView.swift:3930:49: error: instance member 'tertiary' cannot be used on type 'Color?'
+/Users/runner/work/dsh-mobile/dsh-mobile/DeepSeekHarnessMobile/Views/ConversationView.swift:3930:49: error: member 'tertiary' in 'Color?' produces result of type 'some ShapeStyle', but context expects 'Color?'
+/Users/runner/work/dsh-mobile/dsh-mobile/DeepSeekHarnessMobile/Views/HumanQuestionView.swift:191:51: error: instance member 'tertiary' cannot be used on type 'Color?'
+/Users/runner/work/dsh-mobile/dsh-mobile/DeepSeekHarnessMobile/Views/HumanQuestionView.swift:191:51: error: member 'tertiary' in 'Color?' produces result of type 'some ShapeStyle', but context expects 'Color?'
