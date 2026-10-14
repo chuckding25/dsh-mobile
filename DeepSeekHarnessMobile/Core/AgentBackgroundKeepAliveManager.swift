@@ -42,6 +42,8 @@ final class AgentBackgroundKeepAliveManager: NSObject, AgentLongRunningKeepAlive
     private var applicationIsInBackground = false
     private var didRequestAlwaysAuthorization = false
     private var locationStartTask: Task<Void, Never>?
+    /// iOS 17 起可用；更低版本不启用定位后台会话。
+    @available(iOS 17.0, *)
     private var backgroundActivitySession: CLBackgroundActivitySession?
     private var isUpdatingLocation = false
 
@@ -171,10 +173,18 @@ final class AgentBackgroundKeepAliveManager: NSObject, AgentLongRunningKeepAlive
     }
 
     private func ensureBackgroundActivitySession() {
-        guard agentWorkIsActive,
+        guard #available(iOS 17.0, *),
+              agentWorkIsActive,
               !applicationIsInBackground,
               backgroundActivitySession == nil else { return }
         backgroundActivitySession = CLBackgroundActivitySession()
+    }
+
+    private func endBackgroundActivitySession() {
+        if #available(iOS 17.0, *) {
+            backgroundActivitySession?.invalidate()
+            backgroundActivitySession = nil
+        }
     }
 
     private func startBackgroundResources() {
@@ -343,8 +353,7 @@ final class AgentBackgroundKeepAliveManager: NSObject, AgentLongRunningKeepAlive
         locationStartTask = nil
         stopPulseTimer()
         stopLocationUpdates()
-        backgroundActivitySession?.invalidate()
-        backgroundActivitySession = nil
+        endBackgroundActivitySession()
         stopSilentAudio()
     }
 
@@ -387,8 +396,7 @@ extension AgentBackgroundKeepAliveManager: @preconcurrency CLLocationManagerDele
             }
         case .restricted, .denied:
             stopLocationUpdates()
-            backgroundActivitySession?.invalidate()
-            backgroundActivitySession = nil
+            endBackgroundActivitySession()
         case .notDetermined:
             break
         @unknown default:

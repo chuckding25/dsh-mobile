@@ -28,7 +28,8 @@ final class VoiceInputAdapter: ObservableObject {
         shared: SharedVoiceInputStore = SharedVoiceInputStore(),
         recorder: any VoiceAudioCapturing = IOSVoiceRecorder(),
         requestPermission: @escaping (@escaping @Sendable (Bool) -> Void) -> Void = { completion in
-            AVAudioApplication.requestRecordPermission { completion($0) }
+            // iOS 17 的 AVAudioApplication 在部署目标 16 下不可用，用老 API（17 起仅标记弃用）。
+            AVAudioSession.sharedInstance().requestRecordPermission { completion($0) }
         }
     ) {
         self.recorder = recorder

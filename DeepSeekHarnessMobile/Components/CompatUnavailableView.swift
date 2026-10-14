@@ -2,6 +2,14 @@ import SwiftUI
 
 // MARK: - 版本兼容扩展（iOS 16.0 部署目标）
 
+extension Color {
+    /// iOS 16 兼容：`Color.opacity(_:)` 在 iOS 17 SDK 中标注为 17+，
+    /// 通过 UIColor alpha 构造实现同样效果（iOS 15+ 可用）。
+    func compatOpacity(_ opacity: Double) -> Color {
+        Color(UIColor(self).withAlphaComponent(CGFloat(opacity)))
+    }
+}
+
 extension View {
     /// `presentationBackground` 需要 iOS 16.4；更低版本保持默认背景。
     @ViewBuilder

@@ -47,9 +47,9 @@ struct HumanQuestionView: View {
         .glassSurface(radius: 24, tint: cardTint)
         .overlay {
             RoundedRectangle(cornerRadius: 24, style: .continuous)
-                .stroke(colorScheme == .dark ? .white.opacity(0.14) : .white.opacity(0.72), lineWidth: 0.8)
+                .stroke(colorScheme == .dark ? Color.white.compatOpacity(0.14) : Color.white.compatOpacity(0.72), lineWidth: 0.8)
         }
-        .shadow(color: .black.opacity(colorScheme == .dark ? 0.30 : 0.12), radius: 20, y: 9)
+        .shadow(color: Color.black.compatOpacity(colorScheme == .dark ? 0.30 : 0.12), radius: 20, y: 9)
         .padding(.horizontal, 14)
         .confirmationDialog(String(localized: "放弃这组问题？"), isPresented: $showsCancelConfirmation, titleVisibility: .visible) {
             Button(String(localized: "跳过并让 Agent 继续"), role: .destructive, action: onCancel)
@@ -184,7 +184,7 @@ struct HumanQuestionView: View {
                     .scrollContentBackground(.hidden)
                     .frame(minHeight: 92, maxHeight: 138)
                     .padding(10)
-                    .background(Color.primary.opacity(0.055), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+                    .background(Color.primary.compatOpacity(0.055), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
                     .overlay(alignment: .topLeading) {
                         if draft(for: question).custom.isEmpty {
                             Text(String(localized: "输入你的答案"))
@@ -204,7 +204,7 @@ struct HumanQuestionView: View {
                 }
                 .padding(.horizontal, 13)
                 .padding(.vertical, 11)
-                .background(Color.primary.opacity(0.05), in: RoundedRectangle(cornerRadius: 13, style: .continuous))
+                .background(Color.primary.compatOpacity(0.05), in: RoundedRectangle(cornerRadius: 13, style: .continuous))
             }
         }
         .disabled(status.isBusy)
@@ -221,7 +221,7 @@ struct HumanQuestionView: View {
                       ? (question.allowsMultipleSelections ? "checkmark.square.fill" : "largecircle.fill.circle")
                       : (question.allowsMultipleSelections ? "square" : "circle"))
                     .font(.system(size: 19, weight: .medium))
-                    .foregroundStyle(isSelected ? DSHColor.ocean : Color.secondary.opacity(0.55))
+                    .foregroundStyle(isSelected ? DSHColor.ocean : Color.secondary.compatOpacity(0.55))
                     .padding(.top, 1)
                 VStack(alignment: .leading, spacing: 3) {
                     HStack(spacing: 7) {
@@ -235,7 +235,7 @@ struct HumanQuestionView: View {
                                 .foregroundStyle(DSHColor.ocean)
                                 .padding(.horizontal, 6)
                                 .padding(.vertical, 3)
-                                .background(DSHColor.ocean.opacity(0.12), in: Capsule())
+                                .background(DSHColor.ocean.compatOpacity(0.12), in: Capsule())
                         }
                     }
                     if let description = option.description, !description.isEmpty {
@@ -249,12 +249,12 @@ struct HumanQuestionView: View {
             }
             .padding(12)
             .background(
-                isSelected ? DSHColor.ocean.opacity(0.09) : Color.primary.opacity(0.035),
+                isSelected ? DSHColor.ocean.compatOpacity(0.09) : Color.primary.compatOpacity(0.035),
                 in: RoundedRectangle(cornerRadius: 14, style: .continuous)
             )
             .overlay {
                 RoundedRectangle(cornerRadius: 14, style: .continuous)
-                    .stroke(isSelected ? DSHColor.ocean.opacity(0.48) : Color.primary.opacity(0.07), lineWidth: 1)
+                    .stroke(isSelected ? DSHColor.ocean.compatOpacity(0.48) : Color.primary.compatOpacity(0.07), lineWidth: 1)
             }
         }
         .buttonStyle(.plain)
@@ -357,7 +357,7 @@ struct HumanQuestionView: View {
     }
 
     private var cardTint: Color {
-        Color(uiColor: .secondarySystemBackground).opacity(colorScheme == .dark ? 0.78 : 0.82)
+        Color(uiColor: .secondarySystemBackground).compatOpacity(colorScheme == .dark ? 0.78 : 0.82)
     }
 
     private func draft(for question: GatewayQuestion) -> QuestionDraft {

@@ -553,7 +553,7 @@ private struct AgentPresetCard: View {
                         .foregroundStyle(.secondary)
                         .padding(.horizontal, 7)
                         .padding(.vertical, 3)
-                        .background(Color.secondary.opacity(0.1), in: Capsule())
+                        .background(Color.secondary.compatOpacity(0.1), in: Capsule())
                     Spacer()
                     if isSelected {
                         Text("当前使用")
@@ -582,7 +582,7 @@ private struct AgentPresetCard: View {
             .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
             .overlay {
                 RoundedRectangle(cornerRadius: 16, style: .continuous)
-                    .stroke(isSelected ? Color.primary : Color.secondary.opacity(0.18), lineWidth: isSelected ? 1.5 : 1)
+                    .stroke(isSelected ? Color.primary : Color.secondary.compatOpacity(0.18), lineWidth: isSelected ? 1.5 : 1)
             }
         }
         .buttonStyle(.plain)
@@ -769,7 +769,7 @@ private struct DefaultModelCard: View {
                                 .font(.caption.weight(.medium))
                                 .padding(.horizontal, 10)
                                 .padding(.vertical, 5)
-                                .background(isCurrentEffort ? Color.primary : Color.secondary.opacity(0.12), in: Capsule())
+                                .background(isCurrentEffort ? Color.primary : Color.secondary.compatOpacity(0.12), in: Capsule())
                                 .foregroundStyle(isCurrentEffort ? Color(uiColor: .systemBackground) : .primary)
                         }
                         .buttonStyle(.plain)
@@ -785,7 +785,7 @@ private struct DefaultModelCard: View {
         .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
         .overlay {
             RoundedRectangle(cornerRadius: 16, style: .continuous)
-                .stroke(isSelected ? Color.primary : Color.secondary.opacity(0.18), lineWidth: isSelected ? 1.5 : 1)
+                .stroke(isSelected ? Color.primary : Color.secondary.compatOpacity(0.18), lineWidth: isSelected ? 1.5 : 1)
         }
         .opacity(isBusy ? 0.7 : 1)
     }

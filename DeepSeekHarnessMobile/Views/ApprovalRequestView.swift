@@ -21,9 +21,9 @@ struct ApprovalRequestView: View {
         }
         .background(Color(uiColor: .systemBackground))
         .clipShape(cardShape)
-        .overlay { cardShape.stroke(amber.opacity(0.78), lineWidth: 1) }
+        .overlay { cardShape.stroke(amber.compatOpacity(0.78), lineWidth: 1) }
         .shadow(
-            color: .black.opacity(colorScheme == .dark ? 0.18 : 0.055),
+            color: Color.black.compatOpacity(colorScheme == .dark ? 0.18 : 0.055),
             radius: 10,
             y: 4
         )
@@ -137,7 +137,7 @@ struct ApprovalRequestView: View {
         .padding(.trailing, 9)
         .padding(.vertical, 9)
         // 外层统一裁剪顶部圆角；标题栏自身保持矩形，因此下沿不会出现圆角。
-        .background(amber.opacity(colorScheme == .dark ? 0.12 : 0.08))
+        .background(amber.compatOpacity(colorScheme == .dark ? 0.12 : 0.08))
     }
 
     private var actionButtons: some View {
@@ -167,7 +167,7 @@ struct ApprovalRequestView: View {
         }
         .padding(.horizontal, 12)
         .padding(.vertical, 10)
-        .background(Color.primary.opacity(0.04), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+        .background(Color.primary.compatOpacity(0.04), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
         .onChange(of: showsDetails) { expanded in
             gatewayApprovalTrace("ui details expanded=\(expanded) rpcId=\(request.rpcId)")
         }

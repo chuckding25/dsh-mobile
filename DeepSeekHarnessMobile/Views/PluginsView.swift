@@ -336,7 +336,7 @@ private struct ExperimentalPluginBadge: View {
             .foregroundStyle(colorScheme == .dark ? Color(red: 0.55, green: 0.68, blue: 1) : .blue)
             .padding(.horizontal, 8)
             .padding(.vertical, 3)
-            .background(Color.blue.opacity(colorScheme == .dark ? 0.2 : 0.1), in: Capsule())
+            .background(Color.blue.compatOpacity(colorScheme == .dark ? 0.2 : 0.1), in: Capsule())
             .fixedSize()
     }
 }
@@ -346,7 +346,7 @@ private struct PluginIcon: View {
     let fallback: String
     var body: some View {
         ZStack {
-            RoundedRectangle(cornerRadius: 13).strokeBorder(Color.gray.opacity(0.3))
+            RoundedRectangle(cornerRadius: 13).strokeBorder(Color.gray.compatOpacity(0.3))
             if let dataURL, dataURL.count < 256_000,
                dataURL.hasPrefix("data:image/"),
                let comma = dataURL.firstIndex(of: ","),

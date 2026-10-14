@@ -29,7 +29,7 @@ struct VoiceRipplePanel: View {
             ZStack {
                 ZStack {
                     base
-                    Ellipse().fill(glow.opacity(0.8))
+                    Ellipse().fill(glow.compatOpacity(0.8))
                         .frame(width: geometry.size.width * 1.5, height: geometry.size.height * 0.9)
                         .blur(radius: 34).offset(y: 20)
                 }
@@ -46,13 +46,13 @@ struct VoiceRipplePanel: View {
                 }
                 .accessibilityHidden(true)
                 Text(LocalizedStringKey(state.status))
-                    .font(.system(size: 17, weight: .medium)).foregroundStyle(ink.opacity(0.9))
+                    .font(.system(size: 17, weight: .medium)).foregroundStyle(ink.compatOpacity(0.9))
                     .position(x: geometry.size.width / 2, y: contentHeight * 0.4)
                 if state.phase == "transcribing" {
                     Button("取消", action: stop)
-                        .font(.caption.weight(.medium)).foregroundStyle(ink.opacity(0.85))
+                        .font(.caption.weight(.medium)).foregroundStyle(ink.compatOpacity(0.85))
                         .padding(.horizontal, 14).padding(.vertical, 8)
-                        .background(ink.opacity(0.10), in: Capsule())
+                        .background(ink.compatOpacity(0.10), in: Capsule())
                         .position(x: geometry.size.width / 2, y: contentHeight * 0.86)
                 }
             }
@@ -97,7 +97,7 @@ private struct VoiceEllipticalMask: View {
         let radius = Double(index) / 32
         let progress = min(1, max(0, (radius - 0.625) / 0.375))
         let opacity = 1 - progress * progress * (3 - 2 * progress)
-        return .init(color: .black.opacity(opacity), location: radius)
+        return .init(color: Color.black.compatOpacity(opacity), location: radius)
     })
 
     var body: some View {
@@ -167,7 +167,7 @@ private struct VoiceParticleField: View, Animatable {
                 let radius = freeRadius * (1 - gathering) + waveRadius * gathering
                 let alpha = freeAlpha * (1 - gathering) + waveAlpha * gathering
                 context.fill(Path(ellipseIn: CGRect(x: x - radius, y: y - radius, width: radius * 2, height: radius * 2)),
-                             with: .color(ink.opacity(alpha)))
+                             with: .color(ink.compatOpacity(alpha)))
             }
         }
     }

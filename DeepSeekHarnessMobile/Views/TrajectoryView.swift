@@ -112,7 +112,7 @@ struct TrajectoryView: View {
     }
 
     private var overviewSeparator: Color {
-        colorScheme == .dark ? .white.opacity(0.14) : .black.opacity(0.10)
+        colorScheme == .dark ? Color.white.compatOpacity(0.14) : Color.black.compatOpacity(0.10)
     }
 
     private var nodes: [TrajectoryNode] { timeline.nodes }
@@ -238,7 +238,7 @@ private struct TimelineOverviewCanvas: View {
     }
 
     private var laneGuideColor: Color {
-        colorScheme == .dark ? .white.opacity(0.10) : .black.opacity(0.07)
+        colorScheme == .dark ? Color.white.compatOpacity(0.10) : Color.black.compatOpacity(0.07)
     }
 
     private struct LayoutEntry {
@@ -417,20 +417,20 @@ private struct TrajectoryRow: View {
         }
         .padding(.horizontal, 8)
         .frame(height: 42)
-        .background(highlighted ? DSHColor.ocean.opacity(0.12) : .clear, in: RoundedRectangle(cornerRadius: 10))
+        .background(highlighted ? DSHColor.ocean.compatOpacity(0.12) : .clear, in: RoundedRectangle(cornerRadius: 10))
         .animation(.easeInOut(duration: 0.18), value: highlighted)
     }
 
     private var tagFill: Color {
-        node.kind.color.opacity(colorScheme == .dark ? 0.24 : 0.10)
+        node.kind.color.compatOpacity(colorScheme == .dark ? 0.24 : 0.10)
     }
 
     private var tagEdge: Color {
-        node.kind.color.opacity(colorScheme == .dark ? 0.38 : 0.14)
+        node.kind.color.compatOpacity(colorScheme == .dark ? 0.38 : 0.14)
     }
 
     private var timelineLineColor: Color {
-        colorScheme == .dark ? .white.opacity(0.22) : .black.opacity(0.14)
+        colorScheme == .dark ? Color.white.compatOpacity(0.22) : Color.black.compatOpacity(0.14)
     }
 }
 
@@ -475,7 +475,7 @@ private struct TrajectoryTurnHeader: View {
     }
 
     private var turnDividerColor: Color {
-        colorScheme == .dark ? .white.opacity(0.16) : .black.opacity(0.10)
+        colorScheme == .dark ? Color.white.compatOpacity(0.16) : Color.black.compatOpacity(0.10)
     }
 }
 

@@ -29,15 +29,23 @@ struct GlassSurface: ViewModifier {
         } else {
             content
                 .background {
-                    RoundedRectangle(cornerRadius: radius, style: .continuous)
-                        .fill(dark ? AnyShapeStyle(.ultraThinMaterial.opacity(tint == nil ? 0.75 : 0.82)) : AnyShapeStyle(.thinMaterial))
-                        .overlay {
+                    Group {
+                        if dark {
                             RoundedRectangle(cornerRadius: radius, style: .continuous)
-                                .fill(tint ?? .clear)
+                                .fill(.ultraThinMaterial)
+                                .opacity(tint == nil ? 0.75 : 0.82)
+                        } else {
+                            RoundedRectangle(cornerRadius: radius, style: .continuous)
+                                .fill(.thinMaterial)
                         }
+                    }
+                    .overlay {
+                        RoundedRectangle(cornerRadius: radius, style: .continuous)
+                            .fill(tint ?? .clear)
+                    }
                 }
-                .overlay(RoundedRectangle(cornerRadius: radius, style: .continuous).stroke(Color.white.opacity(dark ? 0.2 : 0.7), lineWidth: 0.8))
-                .shadow(color: DSHColor.navy.opacity(0.18), radius: 16, y: 8)
+                .overlay(RoundedRectangle(cornerRadius: radius, style: .continuous).stroke(Color.white.compatOpacity(dark ? 0.2 : 0.7), lineWidth: 0.8))
+                .shadow(color: DSHColor.navy.compatOpacity(0.18), radius: 16, y: 8)
         }
     }
 }
@@ -68,7 +76,7 @@ struct ConnectionDot: View {
         Circle()
             .fill(color)
             .frame(width: 8, height: 8)
-            .shadow(color: color.opacity(0.65), radius: 5)
+            .shadow(color: color.compatOpacity(0.65), radius: 5)
     }
 }
 

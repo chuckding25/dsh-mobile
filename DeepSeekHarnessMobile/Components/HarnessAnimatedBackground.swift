@@ -25,7 +25,7 @@ struct HarnessAnimatedBackground: View {
                     .blendMode(.screen)
 
                 LinearGradient(
-                    colors: [.clear, DSHColor.navy.opacity(0.12), Color.black.opacity(0.58)],
+                    colors: [.clear, DSHColor.navy.compatOpacity(0.12), Color.black.compatOpacity(0.58)],
                     startPoint: .top,
                     endPoint: .bottom
                 )
@@ -42,16 +42,22 @@ private struct HarnessFluidLayer: View {
     let time: TimeInterval
 
     var body: some View {
-        Rectangle()
-            .fill(DSHColor.navy)
-            .visualEffect { content, proxy in
-                content.colorEffect(
-                    ShaderLibrary.harnessFluid(
-                        .float2(proxy.size),
-                        .float(Float(time))
+        if #available(iOS 17.0, *) {
+            Rectangle()
+                .fill(DSHColor.navy)
+                .visualEffect { content, proxy in
+                    content.colorEffect(
+                        ShaderLibrary.harnessFluid(
+                            .float2(proxy.size),
+                            .float(Float(time))
+                        )
                     )
-                )
-            }
+                }
+        } else {
+            // iOS 16 无 ShaderLibrary/visualEffect，降级为纯色底。
+            Rectangle()
+                .fill(DSHColor.navy)
+        }
     }
 }
 
@@ -70,7 +76,7 @@ private struct HarnessTechnicalGrid: View {
                 grid.addLine(to: CGPoint(x: size.width, y: y))
             }
 
-            context.stroke(grid, with: .color(.white.opacity(0.043)), lineWidth: 0.55)
+            context.stroke(grid, with: .color(Color.white.compatOpacity(0.043)), lineWidth: 0.55)
 
             // Sparse square intersections mirror the website's technical grid
             // without competing with the whale particle silhouette.
@@ -80,14 +86,14 @@ private struct HarnessTechnicalGrid: View {
                 for column in 0..<columns where (row * 11 + column * 7) % 13 == 0 {
                     let point = CGPoint(x: CGFloat(column) * spacing, y: CGFloat(row) * spacing)
                     let rect = CGRect(x: point.x - 1.1, y: point.y - 1.1, width: 2.2, height: 2.2)
-                    context.fill(Path(rect), with: .color(.white.opacity(0.085)))
+                    context.fill(Path(rect), with: .color(Color.white.compatOpacity(0.085)))
                 }
             }
         }
         .mask(
             LinearGradient(
                 stops: [
-                    .init(color: .white.opacity(0.8), location: 0),
+                    .init(color: Color.white.compatOpacity(0.8), location: 0),
                     .init(color: .white, location: 0.56),
                     .init(color: .clear, location: 1)
                 ],
@@ -140,7 +146,7 @@ private struct HarnessWhaleField: View {
                     green: min(1, max(0, 0.79 + 0.12 * boundedLight)),
                     blue: min(1, max(0, 0.92 + 0.08 * boundedLight))
                 )
-                context.fill(Path(roundedRect: rect, cornerRadius: dotSize * 0.18), with: .color(color.opacity(alpha)))
+                context.fill(Path(roundedRect: rect, cornerRadius: dotSize * 0.18), with: .color(color.compatOpacity(alpha)))
             }
         }
         .opacity(0.56)

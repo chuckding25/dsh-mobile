@@ -42,19 +42,19 @@ struct WorkspaceView: View {
                     .frame(width: geometry.size.width, height: fullHeight)
                     .background(DSHColor.navy)
                     .overlay {
-                        Color.black.opacity(dimOpacity)
+                        Color.black.compatOpacity(dimOpacity)
                             .allowsHitTesting(false)
                     }
                     .clipShape(RoundedRectangle(cornerRadius: 48, style: .continuous))
                     .compositingGroup()
                     .shadow(
-                        color: .black.opacity(0.12 * progress),
+                        color: Color.black.compatOpacity(0.12 * progress),
                         radius: 9 * progress,
                         x: -2 * progress,
                         y: 0
                     )
                     .shadow(
-                        color: .black.opacity(0.30 * progress),
+                        color: Color.black.compatOpacity(0.30 * progress),
                         radius: 26 * progress,
                         x: -4 * progress,
                         y: 0
@@ -149,7 +149,7 @@ struct WorkspaceView: View {
                             .font(.system(size: 32, weight: .bold))
                         if connectionIsReady {
                             Text("已连接Deepseek Harness预览版")
-                                .font(.subheadline).foregroundStyle(Color.white.opacity(0.65))
+                                .font(.subheadline).foregroundStyle(Color.white.compatOpacity(0.65))
                         }
                     }
                     .id("workspace-hero")
@@ -320,7 +320,7 @@ struct WorkspaceView: View {
             Button(action: action) { label }
                 .buttonStyle(.plain)
                 .background(.ultraThinMaterial, in: Circle())
-                .overlay(Circle().stroke(Color.white.opacity(0.25), lineWidth: 0.8))
+                .overlay(Circle().stroke(Color.white.compatOpacity(0.25), lineWidth: 0.8))
                 .accessibilityLabel(accessibilityLabel)
         }
     }
@@ -377,15 +377,15 @@ struct WorkspaceView: View {
             Image(systemName: "folder").foregroundStyle(.blue).font(.title3)
             VStack(alignment: .leading, spacing: 2) {
                 Text(workspaceDisplayTitle).font(.subheadline.weight(.semibold))
-                Text(workspaceDisplayPath).font(.caption).foregroundStyle(Color.white.opacity(0.55)).lineLimit(1)
+                Text(workspaceDisplayPath).font(.caption).foregroundStyle(Color.white.compatOpacity(0.55)).lineLimit(1)
             }
             Spacer()
             GatewayConnectionIndicator(gateway: store.gateway)
-            Image(systemName: "chevron.down").font(.caption).foregroundStyle(Color.white.opacity(0.55))
+            Image(systemName: "chevron.down").font(.caption).foregroundStyle(Color.white.compatOpacity(0.55))
         }
         .padding(16)
-        .background(Color.white.opacity(0.055), in: RoundedRectangle(cornerRadius: 15))
-        .overlay(RoundedRectangle(cornerRadius: 15).stroke(Color.white.opacity(0.14)))
+        .background(Color.white.compatOpacity(0.055), in: RoundedRectangle(cornerRadius: 15))
+        .overlay(RoundedRectangle(cornerRadius: 15).stroke(Color.white.compatOpacity(0.14)))
         .contentShape(RoundedRectangle(cornerRadius: 15))
     }
 
@@ -410,14 +410,14 @@ struct WorkspaceView: View {
     private var sessionSearch: some View {
         HStack(spacing: 8) {
             Image(systemName: "magnifyingglass")
-                .foregroundStyle(Color.white.opacity(0.68))
+                .foregroundStyle(Color.white.compatOpacity(0.68))
             TextField(
                 "",
                 text: $searchQuery,
                 prompt: Text("搜索会话内容")
-                    .foregroundStyle(Color.white.opacity(0.58))
+                    .foregroundStyle(Color.white.compatOpacity(0.58))
             )
-            .foregroundStyle(Color.white.opacity(0.92))
+            .foregroundStyle(Color.white.compatOpacity(0.92))
             .tint(.white)
             .textInputAutocapitalization(.never)
             .focused($sessionSearchIsFocused)
@@ -425,15 +425,15 @@ struct WorkspaceView: View {
             .onSubmit { sessionSearchIsFocused = false }
         }
         .padding(.horizontal, 12).frame(height: 42)
-        .background(Color.white.opacity(0.06), in: RoundedRectangle(cornerRadius: 13))
-        .overlay(RoundedRectangle(cornerRadius: 13).stroke(Color.white.opacity(0.1)))
+        .background(Color.white.compatOpacity(0.06), in: RoundedRectangle(cornerRadius: 13))
+        .overlay(RoundedRectangle(cornerRadius: 13).stroke(Color.white.compatOpacity(0.1)))
     }
 
     private var emptySessions: some View {
         Text("暂无已知会话。连接服务后创建第一个任务。")
-            .font(.subheadline).foregroundStyle(Color.white.opacity(0.5))
+            .font(.subheadline).foregroundStyle(Color.white.compatOpacity(0.5))
             .frame(maxWidth: .infinity, alignment: .leading).padding(18)
-            .background(Color.white.opacity(0.04), in: RoundedRectangle(cornerRadius: 15))
+            .background(Color.white.compatOpacity(0.04), in: RoundedRectangle(cornerRadius: 15))
     }
 
     private var displayedSessions: [SessionSummary] {
@@ -487,7 +487,7 @@ struct WorkspaceView: View {
                     .id("workspace-session-\(session.id)")
 
                 Divider()
-                    .overlay(Color.white.opacity(0.1))
+                    .overlay(Color.white.compatOpacity(0.1))
                     .padding(.leading, 18)
             }
         }
@@ -496,16 +496,16 @@ struct WorkspaceView: View {
     private func sessionRow(_ session: SessionSummary) -> some View {
         HStack(spacing: 11) {
             Circle()
-                .fill(session.isRunning ? DSHColor.success : (session.hasUnread ? DSHColor.ocean : .white.opacity(0.35)))
+                .fill(session.isRunning ? DSHColor.success : (session.hasUnread ? DSHColor.ocean : Color.white.compatOpacity(0.35)))
                 .frame(width: 7, height: 7)
                 .shadow(color: session.isRunning ? DSHColor.success : .clear, radius: 5)
             VStack(alignment: .leading, spacing: 3) {
                 Text(session.title).lineLimit(1).font(.subheadline.weight(.medium))
-                Text(String(session.id.prefix(16))).font(.caption2.monospaced()).foregroundStyle(Color.white.opacity(0.42))
+                Text(String(session.id.prefix(16))).font(.caption2.monospaced()).foregroundStyle(Color.white.compatOpacity(0.42))
             }
             Spacer()
             Text(session.isRunning ? String(localized: "运行中") : session.lastActivity.formatted(.relative(presentation: .named)))
-                .font(.caption).foregroundStyle(session.isRunning ? .blue : .white.opacity(0.48))
+                .font(.caption).foregroundStyle(session.isRunning ? .blue : Color.white.compatOpacity(0.48))
         }
         .padding(.horizontal, 4)
         .padding(.vertical, 10)
@@ -518,7 +518,7 @@ struct WorkspaceView: View {
             Button(action: onNewSession) {
                 newSessionButtonLabel
             }
-            .buttonStyle(.glass(.clear.tint(DSHColor.navy.opacity(0.22))))
+            .buttonStyle(.glass(.clear.tint(DSHColor.navy.compatOpacity(0.22))))
             .buttonBorderShape(.roundedRectangle(radius: 18))
             .buttonSizing(.flexible)
         } else {
@@ -526,7 +526,7 @@ struct WorkspaceView: View {
                 newSessionButtonLabel
             }
             .buttonStyle(.plain)
-            .glassSurface(radius: 18, dark: true, tint: .white.opacity(0.08))
+            .glassSurface(radius: 18, dark: true, tint: Color.white.compatOpacity(0.08))
         }
     }
 
@@ -534,7 +534,7 @@ struct WorkspaceView: View {
         HStack(spacing: 10) {
             Image(systemName: "plus").font(.system(size: 15, weight: .semibold))
                 .frame(width: 28, height: 28)
-                .background(Color.white.opacity(0.1), in: Circle())
+                .background(Color.white.compatOpacity(0.1), in: Circle())
             Text("新建会话").font(.headline)
         }
         .frame(maxWidth: .infinity).frame(height: 38)
@@ -677,7 +677,7 @@ private struct DirectoryBrowserSheet: View {
                                 ZStack {
                                     Color(uiColor: .secondarySystemGroupedBackground)
                                     if highlightedDirectoryPath == entry.path {
-                                        DSHColor.ocean.opacity(0.24)
+                                        DSHColor.ocean.compatOpacity(0.24)
                                     }
                                 }
                             )
@@ -835,7 +835,7 @@ private struct DirectoryBrowserSheet: View {
                 }
                 .overlay {
                     RoundedRectangle(cornerRadius: 14, style: .continuous)
-                        .stroke(Color.white.opacity(0.18), lineWidth: 0.8)
+                        .stroke(Color.white.compatOpacity(0.18), lineWidth: 0.8)
                 }
                 .contentShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
             }
@@ -884,7 +884,7 @@ private struct GatewayAuthenticationMenu: View {
             menu
                 .buttonStyle(.plain)
                 .background(.ultraThinMaterial, in: Circle())
-                .overlay(Circle().stroke(Color.white.opacity(0.25), lineWidth: 0.8))
+                .overlay(Circle().stroke(Color.white.compatOpacity(0.25), lineWidth: 0.8))
         }
     }
 
@@ -921,8 +921,8 @@ private struct GatewayConnectionStatusText: View {
         switch gateway.state {
         case .connected: DSHColor.success
         case .connecting: DSHColor.amber
-        case .failed: .red.opacity(0.9)
-        case .disconnected: .white.opacity(0.5)
+        case .failed: Color.red.compatOpacity(0.9)
+        case .disconnected: Color.white.compatOpacity(0.5)
         }
     }
 }
@@ -968,7 +968,7 @@ private struct ManualGatewayPairingSheet: View {
                     .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
                     .overlay {
                         RoundedRectangle(cornerRadius: 20, style: .continuous)
-                            .stroke(Color.primary.opacity(0.1), lineWidth: 0.8)
+                            .stroke(Color.primary.compatOpacity(0.1), lineWidth: 0.8)
                     }
 
                     connectionResult
@@ -1080,10 +1080,10 @@ private struct ManualGatewayPairingSheet: View {
         }
         .padding(16)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(color.opacity(0.08), in: RoundedRectangle(cornerRadius: 18, style: .continuous))
+        .background(color.compatOpacity(0.08), in: RoundedRectangle(cornerRadius: 18, style: .continuous))
         .overlay {
             RoundedRectangle(cornerRadius: 18, style: .continuous)
-                .stroke(color.opacity(0.18), lineWidth: 0.8)
+                .stroke(color.compatOpacity(0.18), lineWidth: 0.8)
         }
     }
 
@@ -1124,7 +1124,7 @@ private struct GatewayQRScannerView: View {
                 .ignoresSafeArea()
 
             LinearGradient(
-                colors: [.black.opacity(0.58), .clear, .black.opacity(0.72)],
+                colors: [Color.black.compatOpacity(0.58), .clear, Color.black.compatOpacity(0.72)],
                 startPoint: .top,
                 endPoint: .bottom
             )
@@ -1138,7 +1138,7 @@ private struct GatewayQRScannerView: View {
                             .font(.title2.bold())
                         Text("请扫描 Harness WebUI 生成的二维码")
                             .font(.subheadline)
-                            .foregroundStyle(Color.white.opacity(0.72))
+                            .foregroundStyle(Color.white.compatOpacity(0.72))
                     }
                     Spacer()
                     Button(action: onCancel) {

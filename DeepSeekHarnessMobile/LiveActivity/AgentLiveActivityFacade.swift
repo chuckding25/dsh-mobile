@@ -121,7 +121,8 @@ final class AgentLiveActivityFacade {
         sessionID: String,
         rpcID: String,
         cancelled: Bool,
-        title: String
+        title: String,
+        sourceLabel: String? = nil
     ) {
         if #available(iOS 17.0, *) {
             impl?.choiceResolved(
@@ -129,7 +130,8 @@ final class AgentLiveActivityFacade {
                 sessionID: sessionID,
                 rpcID: rpcID,
                 cancelled: cancelled,
-                title: title
+                title: title,
+                sourceLabel: sourceLabel
             )
         }
     }
@@ -158,7 +160,6 @@ final class AgentLiveActivityFacade {
 
     func approvalSubmitting(
         gatewayID: String,
-        sessionID: String,
         request: GatewayPendingApprovalRequest,
         outcome: GatewayApprovalOutcome,
         title: String,
@@ -168,7 +169,6 @@ final class AgentLiveActivityFacade {
         if #available(iOS 17.0, *) {
             impl?.approvalSubmitting(
                 gatewayID: gatewayID,
-                sessionID: sessionID,
                 request: request,
                 outcome: outcome,
                 title: title,
@@ -183,7 +183,8 @@ final class AgentLiveActivityFacade {
         sessionID: String,
         rpcID: String,
         outcome: GatewayApprovalOutcome,
-        title: String
+        title: String,
+        sourceLabel: String? = nil
     ) {
         if #available(iOS 17.0, *) {
             impl?.approvalResolved(
@@ -191,7 +192,8 @@ final class AgentLiveActivityFacade {
                 sessionID: sessionID,
                 rpcID: rpcID,
                 outcome: outcome,
-                title: title
+                title: title,
+                sourceLabel: sourceLabel
             )
         }
     }

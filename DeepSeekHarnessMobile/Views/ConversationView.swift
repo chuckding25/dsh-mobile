@@ -313,6 +313,9 @@ struct ConversationView: View {
     @State private var expandedConversationNodeIDsBySession: [String: Set<String>] = [:]
     @State private var isPreparingHistoryPresentation = false
     @State private var historyPresentationSessionID: String?
+    /// iOS 16 兼容：双参 onChange 不可用，用 State 记录上一次值代替 oldValue 参数。
+    @State private var prevIsLoadingSelectedHistory = false
+    @State private var prevSelectedSessionID: String?
     @State private var viewportHasConversationContent = false
     @State private var viewportContentSessionID: String?
     @State private var bottomSafeAreaInset: CGFloat = 0
@@ -375,12 +378,12 @@ struct ConversationView: View {
 
     private var glassEdge: Color {
         colorScheme == .dark
-            ? .white.opacity(0.13)
-            : .white.opacity(0.56)
+            ? Color.white.compatOpacity(0.13)
+            : Color.white.compatOpacity(0.56)
     }
 
     private var glassShadow: Color {
-        .black.opacity(colorScheme == .dark ? 0.34 : 0.10)
+        Color.black.compatOpacity(colorScheme == .dark ? 0.34 : 0.10)
     }
 
     private var chat: some View {
@@ -583,7 +586,7 @@ struct ConversationView: View {
                     .font(.system(size: 14, weight: .medium))
                     .foregroundStyle(.white)
                     .padding(.horizontal, 18).padding(.vertical, 11)
-                    .background(Color.black.opacity(0.78), in: Capsule())
+                    .background(Color.black.compatOpacity(0.78), in: Capsule())
                     .padding(.bottom, composerHeight + 16)
                     .allowsHitTesting(false)
                     .accessibilityIdentifier("voice-input-toast")
@@ -621,7 +624,9 @@ struct ConversationView: View {
         } message: {
             Text("删除后，智能体不再持有这个持续目标。")
         }
-        .onChange(of: isLoadingSelectedHistory) { wasLoading, isLoading in
+        .onChange(of: isLoadingSelectedHistory) { isLoading in
+            let wasLoading = prevIsLoadingSelectedHistory
+            prevIsLoadingSelectedHistory = isLoading
             guard historyPresentationSessionID == store.selectedSessionId,
                   isPreparingHistoryPresentation,
                   wasLoading,
@@ -665,9 +670,10 @@ struct ConversationView: View {
             store.voiceInput.leave()
             store.leaveSessionAgentPreset()
         }
-        .onChange(of: store.selectedSessionId) { previous, current in
+        .onChange(of: store.selectedSessionId) { current in
             store.voiceInput.open(context: current ?? "new-session", draft: draft)
-            if previous != nil && current == nil { dismissConversation() }
+            if prevSelectedSessionID != nil && current == nil { dismissConversation() }
+            prevSelectedSessionID = current
         }
         .onChange(of: store.sessionAgentPreset.canSelect) { canSelect in
             if !canSelect { showsAgentPresetMenu = false }
@@ -951,7 +957,6 @@ struct ConversationView: View {
                 .accessibilityLabel(String(localized: "a11y.context.percent", defaultValue: "上下文已用 \(Int(contextProgress * 100))%"))
                 .popover(isPresented: $showsContextUsage, arrowEdge: .bottom) {
                     ContextUsagePopover(snapshot: store.selectedContextSnapshot)
-                        .presentationCompactAdaptation(.popover)
                 }
 
                 Button {
@@ -1052,7 +1057,7 @@ struct ConversationView: View {
             store.voiceInput.draftChanged(value)
             store.updateSlashCommandInput(value)
         }
-        .onChange(of: store.commandDraftClearToken) {
+        .onChange(of: store.commandDraftClearToken) { _ in
             draft = ""
             pendingImages = []
             selectedPhotoItems = []
@@ -1208,12 +1213,11 @@ struct ConversationView: View {
             .padding(.bottom, 24)
             .background(Color(uiColor: .secondarySystemBackground), in: shape)
             .overlay {
-                shape.strokeBorder(Color.primary.opacity(colorScheme == .dark ? 0.22 : 0.14), lineWidth: 0.5)
+                shape.strokeBorder(Color.primary.compatOpacity(colorScheme == .dark ? 0.22 : 0.14), lineWidth: 0.5)
                     .allowsHitTesting(false)
             }
             .clipped()
             // 让标题与背景使用同一份逐帧几何尺寸，避免父布局和内部位置分别插值。
-            .geometryGroup()
         }
     }
 
@@ -1244,7 +1248,7 @@ struct ConversationView: View {
                 .padding(.leading, 10)
                 if item.id != items.last?.id {
                     Rectangle()
-                        .fill(Color.primary.opacity(colorScheme == .dark ? 0.14 : 0.08))
+                        .fill(Color.primary.compatOpacity(colorScheme == .dark ? 0.14 : 0.08))
                         .frame(height: 0.5)
                         .padding(.horizontal, 10)
                         .accessibilityHidden(true)
@@ -1289,7 +1293,7 @@ struct ConversationView: View {
                         } label: {
                             Image(systemName: "xmark.circle.fill")
                                 .symbolRenderingMode(.palette)
-                                .foregroundStyle(.white, .black.opacity(0.68))
+                                .foregroundStyle(.white, Color.black.compatOpacity(0.68))
                                 .font(.system(size: 20))
                         }
                         .buttonStyle(.plain)
@@ -1377,8 +1381,8 @@ struct ConversationView: View {
                 .fill(.ultraThinMaterial)
             LinearGradient(
                 colors: [
-                    conversationBackground.opacity(0.02),
-                    conversationBackground.opacity(0.78),
+                    conversationBackground.compatOpacity(0.02),
+                    conversationBackground.compatOpacity(0.78),
                     conversationBackground
                 ],
                 startPoint: .top,
@@ -1389,7 +1393,7 @@ struct ConversationView: View {
             LinearGradient(
                 stops: [
                     .init(color: .clear, location: 0),
-                    .init(color: .black.opacity(0.58), location: 0.34),
+                    .init(color: Color.black.compatOpacity(0.58), location: 0.34),
                     .init(color: .black, location: 0.68)
                 ],
                 startPoint: .top,
@@ -1432,11 +1436,11 @@ struct ConversationView: View {
                 .contentShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
             }
             .buttonStyle(.plain)
-            .glassSurface(radius: 16, tint: glassTint.opacity(0.88))
+            .glassSurface(radius: 16, tint: glassTint.compatOpacity(0.88))
             .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
             .overlay {
                 RoundedRectangle(cornerRadius: 16, style: .continuous)
-                    .stroke(glassEdge.opacity(0.9), lineWidth: 0.6)
+                    .stroke(glassEdge.compatOpacity(0.9), lineWidth: 0.6)
             }
             .disabled(!store.gateway.state.isConnected || !(state.canSelect || retry))
             .accessibilityLabel("选择会话模式")
@@ -1481,7 +1485,6 @@ struct ConversationView: View {
                     .padding(.vertical, 6)
                 }
                 .frame(width: 292, height: min(CGFloat(state.presets.count) * 68 + 12, 380))
-                .presentationCompactAdaptation(.popover)
             }
         }
     }
@@ -1518,11 +1521,11 @@ struct ConversationView: View {
                 .frame(height: composerCapsuleHeight)
             }
             .buttonStyle(.plain)
-            .glassSurface(radius: 16, tint: glassTint.opacity(0.88))
+            .glassSurface(radius: 16, tint: glassTint.compatOpacity(0.88))
             .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
             .overlay {
                 RoundedRectangle(cornerRadius: 16, style: .continuous)
-                    .stroke(glassEdge.opacity(0.9), lineWidth: 0.6)
+                    .stroke(glassEdge.compatOpacity(0.9), lineWidth: 0.6)
             }
             .accessibilityLabel("查看会话执行状态")
             .accessibilityValue(SessionStatsFormatter.compactLine(snapshot))
@@ -1531,7 +1534,6 @@ struct ConversationView: View {
                     showsSessionStatsPopover = false
                     showsSessionStats = true
                 }
-                .presentationCompactAdaptation(.popover)
             }
         }
 
@@ -1581,7 +1583,7 @@ struct ConversationView: View {
                             .foregroundStyle(.primary)
                             .padding(.horizontal, 6)
                             .padding(.vertical, 3)
-                            .background(DSHColor.purple.opacity(0.14), in: Capsule())
+                            .background(DSHColor.purple.compatOpacity(0.14), in: Capsule())
                     }
                 }
             }
@@ -1690,7 +1692,7 @@ struct ConversationView: View {
                             .layoutPriority(2)
                             .padding(.horizontal, 6)
                             .padding(.vertical, 3)
-                            .background(DSHColor.purple.opacity(0.16), in: Capsule())
+                            .background(DSHColor.purple.compatOpacity(0.16), in: Capsule())
                     }
                 }
                 Image(systemName: "chevron.up.chevron.down")
@@ -2106,7 +2108,7 @@ private struct DeepSearchProgressRow: View {
             : Color(red: 0.357, green: 0.498, blue: 0.663)
         VStack(alignment: .leading, spacing: 0) {
             Rectangle()
-                .fill(Color.primary.opacity(0.025))
+                .fill(Color.primary.compatOpacity(0.025))
                 .frame(height: 0.5)
 
             TimelineView(.animation(minimumInterval: reduceMotion ? 1 : 1.0 / 30.0)) { timeline in
@@ -2186,11 +2188,11 @@ private struct TaskGoalPanels: View {
     }
 
     private var panelGlassEdge: Color {
-        colorScheme == .dark ? .white.opacity(0.22) : .black.opacity(0.13)
+        colorScheme == .dark ? Color.white.compatOpacity(0.22) : Color.black.compatOpacity(0.13)
     }
 
     private var panelShadow: Color {
-        .black.opacity(colorScheme == .dark ? 0.30 : 0.10)
+        Color.black.compatOpacity(colorScheme == .dark ? 0.30 : 0.10)
     }
 
     var body: some View {
@@ -2587,7 +2589,7 @@ private struct ContextUsageRing: View {
     var body: some View {
         ZStack {
             Circle()
-                .stroke(Color.secondary.opacity(0.22), lineWidth: 3)
+                .stroke(Color.secondary.compatOpacity(0.22), lineWidth: 3)
             Circle()
                 .trim(from: 0, to: progress)
                 .stroke(DSHColor.ocean, style: StrokeStyle(lineWidth: 3, lineCap: .round))
@@ -3299,7 +3301,7 @@ private struct ConversationProcessHeaderRow: View {
         }
         .padding(.vertical, 7)
         .overlay(alignment: .bottom) {
-            Rectangle().fill(Color.gray.opacity(0.16)).frame(height: 1)
+            Rectangle().fill(Color.gray.compatOpacity(0.16)).frame(height: 1)
         }
     }
 
@@ -3349,7 +3351,7 @@ private struct ConversationCommandDetailRow: View {
             .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
             .overlay {
                 RoundedRectangle(cornerRadius: 14, style: .continuous)
-                    .stroke(Color.primary.opacity(0.08), lineWidth: 1)
+                    .stroke(Color.primary.compatOpacity(0.08), lineWidth: 1)
             }
             .padding(.leading, 2)
             .padding(.vertical, 4)
@@ -3421,7 +3423,7 @@ struct ConversationEventDetailRow: View {
 
     var body: some View {
         HStack(alignment: .top, spacing: 10) {
-            Rectangle().fill(Color.gray.opacity(0.24)).frame(width: 1)
+            Rectangle().fill(Color.gray.compatOpacity(0.24)).frame(width: 1)
             Group {
                 if needsViewport {
                     ScrollView(.vertical, showsIndicators: true) {
@@ -3741,7 +3743,7 @@ private struct AttachmentImageGrid: View {
                 .clipShape(RoundedRectangle(cornerRadius: 11, style: .continuous))
                 .overlay {
                     RoundedRectangle(cornerRadius: 11, style: .continuous)
-                        .stroke(Color.white.opacity(0.16), lineWidth: 0.7)
+                        .stroke(Color.white.compatOpacity(0.16), lineWidth: 0.7)
                 }
                 .accessibilityLabel(attachment.name ?? String(localized: "图片附件"))
             }
@@ -3857,16 +3859,16 @@ struct ConversationRow: View {
                 }
             }
             .padding(10).frame(maxWidth: .infinity, alignment: .leading)
-            .background((item.isError ? Color.red : DSHColor.ocean).opacity(0.06), in: RoundedRectangle(cornerRadius: 11))
+            .background((item.isError ? Color.red : DSHColor.ocean).compatOpacity(0.06), in: RoundedRectangle(cornerRadius: 11))
         }
     }
 
     private var userBubbleFill: Color {
-        DSHColor.ocean.opacity(colorScheme == .dark ? 0.24 : 0.11)
+        DSHColor.ocean.compatOpacity(colorScheme == .dark ? 0.24 : 0.11)
     }
 
     private var userBubbleEdge: Color {
-        DSHColor.ocean.opacity(colorScheme == .dark ? 0.34 : 0.08)
+        DSHColor.ocean.compatOpacity(colorScheme == .dark ? 0.34 : 0.08)
     }
 }
 
@@ -3934,7 +3936,7 @@ private struct ConversationFallbackEventRow: View {
 
             if !text.isEmpty {
                 HStack(alignment: .top, spacing: 10) {
-                    Rectangle().fill(Color.gray.opacity(0.24)).frame(width: 1)
+                    Rectangle().fill(Color.gray.compatOpacity(0.24)).frame(width: 1)
                     if rendersOutput {
                         ToolOutputView(text: text)
                     } else if shouldRenderJSON {
@@ -4119,7 +4121,7 @@ private extension Theme {
             }
             .thematicBreak {
                 Rectangle()
-                    .fill(Color(uiColor: .separator).opacity(0.55))
+                    .fill(Color(uiColor: .separator).compatOpacity(0.55))
                     .frame(height: 0.5)
                     .markdownMargin(
                         top: compact ? 10 : 18,
@@ -4132,7 +4134,7 @@ private extension Theme {
 private enum DSHInlineCodeStyle {
     // Close to the neutral blue-gray chip used by Harness WebUI, but adaptive
     // enough to remain legible when the app later gains a dark conversation UI.
-    static let fallbackBackground = Color(uiColor: .systemGray5).opacity(0.68)
+    static let fallbackBackground = Color(uiColor: .systemGray5).compatOpacity(0.68)
 }
 
 enum InlineCodePadding {
@@ -4226,7 +4228,7 @@ enum JSONSyntaxHighlighter {
             return isKey ? DSHColor.ocean : Color(red: 0.10, green: 0.55, blue: 0.38)
         }
         if token == "true" || token == "false" { return DSHColor.purple }
-        if token == "null" { return .red.opacity(0.8) }
+        if token == "null" { return Color.red.compatOpacity(0.8) }
         return DSHColor.orange
     }
 

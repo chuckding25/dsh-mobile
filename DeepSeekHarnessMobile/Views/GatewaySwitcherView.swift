@@ -17,8 +17,8 @@ struct GatewaySwitcherBar: View {
             }
             .font(.system(size: 12, weight: .medium))
             .padding(.horizontal, 11).padding(.vertical, 7)
-            .background(Color.white.opacity(0.09), in: Capsule())
-            .overlay(Capsule().stroke(Color.white.opacity(0.14), lineWidth: 0.5))
+            .background(Color.white.compatOpacity(0.09), in: Capsule())
+            .overlay(Capsule().stroke(Color.white.compatOpacity(0.14), lineWidth: 0.5))
         }
         .buttonStyle(.plain)
         .accessibilityLabel("当前主机：\(hosts.activeProfile?.displayName ?? String(localized: "未选择"))，切换主机")
@@ -86,7 +86,7 @@ private struct GatewaySwitcherSheet: View {
                                 .frame(maxWidth: .infinity, alignment: .leading)
                             }
                             .buttonStyle(.plain)
-                            Circle().fill(hosts.onlineIDs.contains(profile.id) ? Color.green : Color.gray.opacity(0.45))
+                            Circle().fill(hosts.onlineIDs.contains(profile.id) ? Color.green : Color.gray.compatOpacity(0.45))
                                 .frame(width: 8, height: 8)
                                 .accessibilityLabel(hosts.onlineIDs.contains(profile.id)
                                     ? String(localized: "在线") : String(localized: "未连接或不可用"))

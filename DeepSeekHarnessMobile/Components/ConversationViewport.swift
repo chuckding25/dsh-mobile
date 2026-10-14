@@ -998,7 +998,9 @@ final class ConversationViewportController: UIViewController, UICollectionViewDe
         // safe-area insets from the cell's current intersection with the
         // window. Those insets change while the user drags and make SwiftUI
         // move/reflow content inside an unchanged collection-view item.
-        host.safeAreaRegions = []
+        if #available(iOS 16.4, *) {
+            host.safeAreaRegions = []
+        }
         host.view.backgroundColor = .clear
         return host.sizeThatFits(
             in: CGSize(width: width, height: CGFloat.greatestFiniteMagnitude)
@@ -1579,7 +1581,9 @@ private final class HostedConversationCell: StableSelfSizingCollectionViewCell {
             existing.rootView = root
         } else {
             let created = UIHostingController(rootView: root)
-            created.safeAreaRegions = []
+            if #available(iOS 16.4, *) {
+                created.safeAreaRegions = []
+            }
             created.view.backgroundColor = .clear
             created.view.clipsToBounds = true
             parent.addChild(created)
