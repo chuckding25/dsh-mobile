@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 按图层边界比例居中缩放；相当于在 108dp 画布中放置 60dp 原图，避免固定 dp 在不同启动器下放大。 -->
+<inset xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/launcher_icon_artwork"
+    android:insetLeft="22.22%"
+    android:insetTop="22.22%"
+    android:insetRight="22.22%"
+    android:insetBottom="22.22%" />

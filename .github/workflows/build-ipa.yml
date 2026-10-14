@@ -1,0 +1,73 @@
+name: Build iOS IPA (iOS 16+)
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build-ipa:
+    runs-on: macos-15
+    timeout-minutes: 60
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      # AGP 初始化需要 Android SDK；GitHub macOS runner 预装了基础 SDK，
+      # 这里补齐 compileSdk 36 对应的 platform（已装则跳过）。
+      - name: Ensure Android SDK platform 36
+        run: |
+          echo "ANDROID_HOME=$ANDROID_HOME"
+          yes | sdkmanager --licenses >/dev/null 2>&1 || true
+          sdkmanager --install "platforms;android-36" >/dev/null 2>&1 || true
+
+      - name: Select latest stable Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+
+      - name: Archive (unsigned, Release)
+        run: |
+          set -euo pipefail
+          chmod +x gradlew
+          xcodebuild archive \
+            -project DeepSeekHarnessMobile.xcodeproj \
+            -scheme DeepSeekHarnessMobile \
+            -configuration Release \
+            -destination "generic/platform=iOS" \
+            -archivePath build/DshMobile.xcarchive \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" \
+            DEVELOPMENT_TEAM="" \
+            | tail -n 40
+
+      - name: Package IPA
+        run: |
+          set -euo pipefail
+          brew install ldid
+          APP="build/DshMobile.xcarchive/Products/Applications/DshMobile.app"
+          test -d "$APP"
+          # TrollStore 安装时自行重签，这里 ldid 伪签保证安装器与 dyld 不挑刺
+          find "$APP" -type f -perm +111 | while read -r bin; do
+            file "$bin" | grep -q Mach-O && ldid -S "$bin" || true
+          done
+          mkdir -p Payload
+          cp -R "$APP" Payload/
+          VERSION=$(grep -m1 "MARKETING_VERSION" DeepSeekHarnessMobile.xcodeproj/project.pbxproj | grep -oE "[0-9]+\.[0-9]+\.[0-9]+" || echo "1.7.3")
+          zip -qry "DshMobile-${VERSION}-ios16.ipa" Payload
+          ls -lh *.ipa
+
+      - name: Upload IPA
+        uses: actions/upload-artifact@v4
+        with:
+          name: DshMobile-ipa
+          path: "*.ipa"
+          retention-days: 30
