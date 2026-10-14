@@ -553,7 +553,7 @@ private struct AgentPresetCard: View {
                         .foregroundStyle(.secondary)
                         .padding(.horizontal, 7)
                         .padding(.vertical, 3)
-                        .background(.secondary.opacity(0.1), in: Capsule())
+                        .background(Color.secondary.opacity(0.1), in: Capsule())
                     Spacer()
                     if isSelected {
                         Text("当前使用")

@@ -36,7 +36,7 @@ struct GlassSurface: ViewModifier {
                                 .fill(tint ?? .clear)
                         }
                 }
-                .overlay(RoundedRectangle(cornerRadius: radius, style: .continuous).stroke(.white.opacity(dark ? 0.2 : 0.7), lineWidth: 0.8))
+                .overlay(RoundedRectangle(cornerRadius: radius, style: .continuous).stroke(Color.white.opacity(dark ? 0.2 : 0.7), lineWidth: 0.8))
                 .shadow(color: DSHColor.navy.opacity(0.18), radius: 16, y: 8)
         }
     }

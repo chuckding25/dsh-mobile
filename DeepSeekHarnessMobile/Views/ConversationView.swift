@@ -3299,7 +3299,7 @@ private struct ConversationProcessHeaderRow: View {
         }
         .padding(.vertical, 7)
         .overlay(alignment: .bottom) {
-            Rectangle().fill(.gray.opacity(0.16)).frame(height: 1)
+            Rectangle().fill(Color.gray.opacity(0.16)).frame(height: 1)
         }
     }
 
@@ -3349,7 +3349,7 @@ private struct ConversationCommandDetailRow: View {
             .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
             .overlay {
                 RoundedRectangle(cornerRadius: 14, style: .continuous)
-                    .stroke(.primary.opacity(0.08), lineWidth: 1)
+                    .stroke(Color.primary.opacity(0.08), lineWidth: 1)
             }
             .padding(.leading, 2)
             .padding(.vertical, 4)
@@ -3421,7 +3421,7 @@ struct ConversationEventDetailRow: View {
 
     var body: some View {
         HStack(alignment: .top, spacing: 10) {
-            Rectangle().fill(.gray.opacity(0.24)).frame(width: 1)
+            Rectangle().fill(Color.gray.opacity(0.24)).frame(width: 1)
             Group {
                 if needsViewport {
                     ScrollView(.vertical, showsIndicators: true) {
@@ -3741,7 +3741,7 @@ private struct AttachmentImageGrid: View {
                 .clipShape(RoundedRectangle(cornerRadius: 11, style: .continuous))
                 .overlay {
                     RoundedRectangle(cornerRadius: 11, style: .continuous)
-                        .stroke(.white.opacity(0.16), lineWidth: 0.7)
+                        .stroke(Color.white.opacity(0.16), lineWidth: 0.7)
                 }
                 .accessibilityLabel(attachment.name ?? String(localized: "图片附件"))
             }
@@ -3934,7 +3934,7 @@ private struct ConversationFallbackEventRow: View {
 
             if !text.isEmpty {
                 HStack(alignment: .top, spacing: 10) {
-                    Rectangle().fill(.gray.opacity(0.24)).frame(width: 1)
+                    Rectangle().fill(Color.gray.opacity(0.24)).frame(width: 1)
                     if rendersOutput {
                         ToolOutputView(text: text)
                     } else if shouldRenderJSON {

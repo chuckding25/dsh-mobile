@@ -17,8 +17,8 @@ struct GatewaySwitcherBar: View {
             }
             .font(.system(size: 12, weight: .medium))
             .padding(.horizontal, 11).padding(.vertical, 7)
-            .background(.white.opacity(0.09), in: Capsule())
-            .overlay(Capsule().stroke(.white.opacity(0.14), lineWidth: 0.5))
+            .background(Color.white.opacity(0.09), in: Capsule())
+            .overlay(Capsule().stroke(Color.white.opacity(0.14), lineWidth: 0.5))
         }
         .buttonStyle(.plain)
         .accessibilityLabel("当前主机：\(hosts.activeProfile?.displayName ?? String(localized: "未选择"))，切换主机")
