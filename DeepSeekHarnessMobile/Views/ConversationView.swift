@@ -3315,7 +3315,7 @@ private struct ConversationProcessHeaderRow: View {
                     .font(.subheadline.weight(.medium))
                     .foregroundStyle(command.isError ? .red : .primary)
                     .lineLimit(1)
-                Text("·").font(.subheadline).foregroundColor(.tertiary)
+                Text("·").font(.subheadline).foregroundColor(Color(uiColor: .tertiaryLabel))
                 Text(group.commandPreview(command.text))
                     .font(.subheadline)
                     .foregroundStyle(command.isError ? .red : .secondary)
@@ -3386,7 +3386,7 @@ private struct ConversationEventHeaderRow: View {
             Text(item.title).foregroundColor(tint).lineLimit(1)
             let summary = preview(item.text)
             if !summary.isEmpty {
-                Text("·").foregroundColor(.tertiary)
+                Text("·").foregroundColor(Color(uiColor: .tertiaryLabel))
                 Text(summary).foregroundColor(.secondary).lineLimit(1)
             }
             Spacer(minLength: 8)
@@ -3465,7 +3465,7 @@ private struct ConversationReasoningHeaderRow: View {
                     .foregroundStyle(DSHColor.purple)
                 let summary = preview(text)
                 if !summary.isEmpty {
-                    Text("·").foregroundColor(.tertiary)
+                    Text("·").foregroundColor(Color(uiColor: .tertiaryLabel))
                     Text(summary)
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
@@ -3842,7 +3842,7 @@ struct ConversationRow: View {
                 Text(item.title)
                     .foregroundColor(item.isError ? .red : .primary)
                 Text("·")
-                    .foregroundColor(.tertiary)
+                    .foregroundColor(Color(uiColor: .tertiaryLabel))
                 Text(item.text)
                     .foregroundColor(item.isError ? .red : .secondary)
             }
@@ -3927,7 +3927,7 @@ private struct ConversationFallbackEventRow: View {
                     .frame(width: 18)
                 Text(title).foregroundColor(tint).lineLimit(1)
                 if !preview.isEmpty {
-                    Text("·").foregroundColor(.tertiary)
+                    Text("·").foregroundColor(Color(uiColor: .tertiaryLabel))
                     Text(preview).foregroundColor(.secondary).lineLimit(1)
                 }
                 Spacer(minLength: 8)
