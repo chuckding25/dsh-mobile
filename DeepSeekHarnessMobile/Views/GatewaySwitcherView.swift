@@ -74,7 +74,7 @@ private struct GatewaySwitcherSheet: View {
                                 }
                             } label: {
                                 VStack(alignment: .leading, spacing: 4) {
-                                    Text(profile.displayName).foregroundStyle(Color(uiColor: .label)).lineLimit(1)
+                                    Text(profile.displayName).foregroundColor(Color(uiColor: .label)).lineLimit(1)
                                     Text(hosts.activeID == profile.id ? String(localized: "当前主机") : String(localized: "点击连接"))
                                         .font(.caption)
                                         .foregroundStyle(
@@ -109,10 +109,10 @@ private struct GatewaySwitcherSheet: View {
                         .padding(.vertical, 2)
                         .animation(.easeInOut(duration: 0.2), value: editMode.isEditing)
                     }
-                } header: { Text("我的主机").foregroundStyle(Color(uiColor: .secondaryLabel)) }
+                } header: { Text("我的主机").foregroundColor(Color(uiColor: .secondaryLabel)) }
                 if hosts.profiles.isEmpty {
                     Text("暂无已连接的主机")
-                        .foregroundStyle(Color(uiColor: .secondaryLabel))
+                        .foregroundColor(Color(uiColor: .secondaryLabel))
                 }
             }
             .environment(\.editMode, $editMode)

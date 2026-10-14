@@ -377,7 +377,7 @@ struct WorkspaceView: View {
             Image(systemName: "folder").foregroundStyle(.blue).font(.title3)
             VStack(alignment: .leading, spacing: 2) {
                 Text(workspaceDisplayTitle).font(.subheadline.weight(.semibold))
-                Text(workspaceDisplayPath).font(.caption).foregroundStyle(Color.white.compatOpacity(0.55)).lineLimit(1)
+                Text(workspaceDisplayPath).font(.caption).foregroundColor(Color.white.compatOpacity(0.55)).lineLimit(1)
             }
             Spacer()
             GatewayConnectionIndicator(gateway: store.gateway)
@@ -415,7 +415,7 @@ struct WorkspaceView: View {
                 "",
                 text: $searchQuery,
                 prompt: Text("搜索会话内容")
-                    .foregroundStyle(Color.white.compatOpacity(0.58))
+                    .foregroundColor(Color.white.compatOpacity(0.58))
             )
             .foregroundStyle(Color.white.compatOpacity(0.92))
             .tint(.white)
@@ -501,7 +501,7 @@ struct WorkspaceView: View {
                 .shadow(color: session.isRunning ? DSHColor.success : .clear, radius: 5)
             VStack(alignment: .leading, spacing: 3) {
                 Text(session.title).lineLimit(1).font(.subheadline.weight(.medium))
-                Text(String(session.id.prefix(16))).font(.caption2.monospaced()).foregroundStyle(Color.white.compatOpacity(0.42))
+                Text(String(session.id.prefix(16))).font(.caption2.monospaced()).foregroundColor(Color.white.compatOpacity(0.42))
             }
             Spacer()
             Text(session.isRunning ? String(localized: "运行中") : session.lastActivity.formatted(.relative(presentation: .named)))
@@ -789,7 +789,7 @@ private struct DirectoryBrowserSheet: View {
                 .foregroundStyle(DSHColor.ocean)
                 .frame(width: 24)
             VStack(alignment: .leading, spacing: 2) {
-                Text(title).foregroundStyle(Color(uiColor: .label))
+                Text(title).foregroundColor(Color(uiColor: .label))
                 if let subtitle {
                     Text(subtitle)
                         .font(.caption)

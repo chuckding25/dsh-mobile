@@ -42,9 +42,8 @@ final class AgentBackgroundKeepAliveManager: NSObject, AgentLongRunningKeepAlive
     private var applicationIsInBackground = false
     private var didRequestAlwaysAuthorization = false
     private var locationStartTask: Task<Void, Never>?
-    /// iOS 17 起可用；更低版本不启用定位后台会话。
-    @available(iOS 17.0, *)
-    private var backgroundActivitySession: CLBackgroundActivitySession?
+    /// iOS 17 起可用；用 AnyObject 存储规避"存储属性不能标注 potentially unavailable"限制。
+    private var backgroundActivitySession: AnyObject?
     private var isUpdatingLocation = false
 
     private var audioEngine: AVAudioEngine?
@@ -181,10 +180,11 @@ final class AgentBackgroundKeepAliveManager: NSObject, AgentLongRunningKeepAlive
     }
 
     private func endBackgroundActivitySession() {
-        if #available(iOS 17.0, *) {
-            backgroundActivitySession?.invalidate()
-            backgroundActivitySession = nil
+        if #available(iOS 17.0, *),
+           let session = backgroundActivitySession as? CLBackgroundActivitySession {
+            session.invalidate()
         }
+        backgroundActivitySession = nil
     }
 
     private func startBackgroundResources() {

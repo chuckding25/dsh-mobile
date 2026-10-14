@@ -224,7 +224,7 @@ private struct WorkspaceDrawerDestination: View {
 
     var body: some View {
         Text(message)
-            .foregroundStyle(.secondary)
+            .foregroundColor(.secondary)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color(uiColor: .systemBackground))
             .navigationTitle(title)
@@ -570,8 +570,8 @@ private struct ScheduledTaskCard: View {
 
     private func detail(_ label: String, _ value: String) -> some View {
         HStack(alignment: .top, spacing: 12) {
-            Text(label).foregroundStyle(.secondary).frame(width: 92, alignment: .leading)
-            Text(value).foregroundStyle(.primary).frame(maxWidth: .infinity, alignment: .leading)
+            Text(label).foregroundColor(.secondary).frame(width: 92, alignment: .leading)
+            Text(value).foregroundColor(.primary).frame(maxWidth: .infinity, alignment: .leading)
         }
         .font(.system(size: 14))
     }
@@ -669,7 +669,7 @@ private struct ScheduledTaskEditSheet: View {
                             .textInputAutocapitalization(.never)
                             .padding(13)
                             .background(Color(uiColor: .secondarySystemBackground), in: RoundedRectangle(cornerRadius: 12))
-                        Text("最多 120 个字").font(.caption).foregroundStyle(.secondary)
+                        Text("最多 120 个字").font(.caption).foregroundColor(.secondary)
                     }
                     VStack(alignment: .leading, spacing: 8) {
                         Text("任务内容").font(.subheadline.weight(.medium))
@@ -708,7 +708,7 @@ private struct ScheduledTaskEditSheet: View {
                         }
                     }
                     if let error = localError ?? (pendingRequestID != nil ? store.scheduledTaskMutationError : nil) {
-                        Text(error).font(.subheadline).foregroundStyle(.red)
+                        Text(error).font(.subheadline).foregroundColor(.red)
                     }
                     if pendingRequestID != nil { ProgressView("正在保存…") }
                 }
@@ -1092,7 +1092,7 @@ private struct WorkspaceFileRow: View {
                 store.browseWorkspaceFiles(path: item.path)
             } label: {
                 Label {
-                    Text(item.name).foregroundStyle(.primary)
+                    Text(item.name).foregroundColor(.primary)
                 } icon: {
                     Image(systemName: "folder.fill").foregroundStyle(DSHColor.ocean)
                 }
@@ -1109,7 +1109,7 @@ private struct WorkspaceFileRow: View {
                             .frame(width: 28)
                         VStack(alignment: .leading, spacing: 3) {
                             Text(item.name)
-                                .foregroundStyle(.primary)
+                                .foregroundColor(.primary)
                                 .lineLimit(1)
                             Text(workspaceFileDetail(item))
                                 .font(.caption)

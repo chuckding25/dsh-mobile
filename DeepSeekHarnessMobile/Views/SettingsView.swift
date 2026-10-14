@@ -40,7 +40,7 @@ struct SettingsView: View {
             HStack {
                 Text(LocalizedStringKey(title))
                 Spacer()
-                Text(verbatim: value).foregroundStyle(.secondary)
+                Text(verbatim: value).foregroundColor(.secondary)
                 Image(systemName: "chevron.right").font(.footnote).foregroundStyle(.tertiary)
             }
             .frame(maxWidth: .infinity, minHeight: 32)
@@ -163,7 +163,7 @@ struct SettingsView: View {
                     Text(gatewayState.label)
                     Spacer()
                     if let port = store.gateway.serverPort {
-                        Text("Port \(port)").foregroundStyle(.secondary)
+                        Text("Port \(port)").foregroundColor(.secondary)
                     }
                 }
                 Button(gatewayState.isConnected ? String(localized: "断开连接") : String(localized: "连接")) {
@@ -408,7 +408,7 @@ private struct DefaultConfigurationRow: View {
     var body: some View {
         HStack(spacing: 12) {
             Text(title)
-                .foregroundStyle(.primary)
+                .foregroundColor(.primary)
             Spacer(minLength: 12)
             if isLoading {
                 ProgressView()
@@ -470,7 +470,7 @@ private struct AgentPresetSelectionView: View {
                     HStack(spacing: 10) {
                         ProgressView()
                         Text("正在读取 Agent 预设…")
-                            .foregroundStyle(.secondary)
+                            .foregroundColor(.secondary)
                     }
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 48)
@@ -622,7 +622,7 @@ private struct DefaultModelSelectionView: View {
                     HStack(spacing: 10) {
                         ProgressView()
                         Text("正在读取模型列表…")
-                            .foregroundStyle(.secondary)
+                            .foregroundColor(.secondary)
                     }
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 48)

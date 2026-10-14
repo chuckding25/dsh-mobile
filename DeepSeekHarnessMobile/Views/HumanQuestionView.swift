@@ -188,7 +188,7 @@ struct HumanQuestionView: View {
                     .overlay(alignment: .topLeading) {
                         if draft(for: question).custom.isEmpty {
                             Text(String(localized: "输入你的答案"))
-                                .foregroundStyle(.tertiary)
+                                .foregroundColor(.tertiary)
                                 .padding(.horizontal, 15)
                                 .padding(.vertical, 18)
                                 .allowsHitTesting(false)

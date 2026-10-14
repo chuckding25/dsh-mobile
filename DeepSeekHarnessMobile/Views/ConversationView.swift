@@ -911,7 +911,7 @@ struct ConversationView: View {
                 VStack(alignment: .leading, spacing: 6) {
                     Text(pending).font(.caption).lineLimit(3)
                     HStack {
-                        Text("草稿已更改，请确认插入识别文字").font(.caption2).foregroundStyle(.secondary)
+                        Text("草稿已更改，请确认插入识别文字").font(.caption2).foregroundColor(.secondary)
                         Spacer()
                         Button("插入") { store.voiceInput.insertPending() }
                         Button("丢弃") { store.voiceInput.dismissFeedback() }
@@ -1233,7 +1233,7 @@ struct ConversationView: View {
                     VStack(alignment: .leading, spacing: 3) {
                         Text(item.preview).font(.subheadline).lineLimit(2)
                         if item.attachmentCount > 0 {
-                            Text("\(item.attachmentCount) 个附件").font(.caption).foregroundStyle(.secondary)
+                            Text("\(item.attachmentCount) 个附件").font(.caption).foregroundColor(.secondary)
                         }
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -2753,7 +2753,7 @@ private struct SessionStatsSheet: View {
 
     private func metric(_ title: String, _ value: String) -> some View {
         HStack {
-            Text(title).foregroundStyle(.secondary)
+            Text(title).foregroundColor(.secondary)
             Spacer()
             Text(value).font(.body.monospacedDigit()).fontWeight(.medium)
         }
@@ -2816,7 +2816,7 @@ private struct SessionStatsPopover: View {
 
     private func row(_ title: String, _ value: String) -> some View {
         HStack {
-            Text(title).foregroundStyle(.secondary)
+            Text(title).foregroundColor(.secondary)
             Spacer()
             Text(value).monospacedDigit().fontWeight(.medium)
         }
@@ -2838,7 +2838,7 @@ private struct ContextUsagePopover: View {
         VStack(alignment: .leading, spacing: 14) {
             HStack(alignment: .firstTextBaseline) {
                 Text("上下文已用")
-                    .foregroundStyle(.secondary)
+                    .foregroundColor(.secondary)
                 Text("\(Int((progress * 100).rounded()))%")
                     .fontWeight(.semibold)
                 Spacer()
@@ -2876,7 +2876,7 @@ private struct ContextUsagePopover: View {
             RoundedRectangle(cornerRadius: 3, style: .continuous)
                 .fill(color)
                 .frame(width: 12, height: 12)
-            Text(title).foregroundStyle(.secondary)
+            Text(title).foregroundColor(.secondary)
             Spacer()
             Text(value.map { "~\(compact($0))" } ?? "—")
                 .monospacedDigit()
@@ -3315,7 +3315,7 @@ private struct ConversationProcessHeaderRow: View {
                     .font(.subheadline.weight(.medium))
                     .foregroundStyle(command.isError ? .red : .primary)
                     .lineLimit(1)
-                Text("·").font(.subheadline).foregroundStyle(.tertiary)
+                Text("·").font(.subheadline).foregroundColor(.tertiary)
                 Text(group.commandPreview(command.text))
                     .font(.subheadline)
                     .foregroundStyle(command.isError ? .red : .secondary)
@@ -3383,11 +3383,11 @@ private struct ConversationEventHeaderRow: View {
             ConversationGlyphImage(glyph: glyph)
                 .foregroundStyle(tint)
                 .frame(width: 18)
-            Text(item.title).foregroundStyle(tint).lineLimit(1)
+            Text(item.title).foregroundColor(tint).lineLimit(1)
             let summary = preview(item.text)
             if !summary.isEmpty {
-                Text("·").foregroundStyle(.tertiary)
-                Text(summary).foregroundStyle(.secondary).lineLimit(1)
+                Text("·").foregroundColor(.tertiary)
+                Text(summary).foregroundColor(.secondary).lineLimit(1)
             }
             Spacer(minLength: 8)
             if isExpandable {
@@ -3465,7 +3465,7 @@ private struct ConversationReasoningHeaderRow: View {
                     .foregroundStyle(DSHColor.purple)
                 let summary = preview(text)
                 if !summary.isEmpty {
-                    Text("·").foregroundStyle(.tertiary)
+                    Text("·").foregroundColor(.tertiary)
                     Text(summary)
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
@@ -3593,9 +3593,9 @@ private struct ConversationProcessToolHeaderRow: View {
                             .foregroundStyle(.tertiary)
                     }
                     if tool.result?.isError == true {
-                        Text("失败").font(.caption2.weight(.semibold)).foregroundStyle(.red)
+                        Text("失败").font(.caption2.weight(.semibold)).foregroundColor(.red)
                     } else if tool.result == nil {
-                        Text("等待结果").font(.caption2).foregroundStyle(.secondary)
+                        Text("等待结果").font(.caption2).foregroundColor(.secondary)
                     }
                 }
                 if !summary.detail.isEmpty {
@@ -3840,11 +3840,11 @@ struct ConversationRow: View {
                     .font(.system(size: 13, weight: .medium))
                     .foregroundStyle(item.isError ? .red : .secondary)
                 Text(item.title)
-                    .foregroundStyle(item.isError ? .red : .primary)
+                    .foregroundColor(item.isError ? .red : .primary)
                 Text("·")
-                    .foregroundStyle(.tertiary)
+                    .foregroundColor(.tertiary)
                 Text(item.text)
-                    .foregroundStyle(item.isError ? .red : .secondary)
+                    .foregroundColor(item.isError ? .red : .secondary)
             }
             .font(.subheadline)
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -3855,7 +3855,7 @@ struct ConversationRow: View {
                     .foregroundStyle(item.isError ? .red : DSHColor.ocean)
                 VStack(alignment: .leading, spacing: 3) {
                     Text(item.title).font(.caption.weight(.semibold))
-                    if !item.text.isEmpty { Text(item.text).font(.caption).foregroundStyle(.secondary).textSelection(.enabled) }
+                    if !item.text.isEmpty { Text(item.text).font(.caption).foregroundColor(.secondary).textSelection(.enabled) }
                 }
             }
             .padding(10).frame(maxWidth: .infinity, alignment: .leading)
@@ -3925,10 +3925,10 @@ private struct ConversationFallbackEventRow: View {
                 ConversationGlyphImage(glyph: icon)
                     .foregroundStyle(tint)
                     .frame(width: 18)
-                Text(title).foregroundStyle(tint).lineLimit(1)
+                Text(title).foregroundColor(tint).lineLimit(1)
                 if !preview.isEmpty {
-                    Text("·").foregroundStyle(.tertiary)
-                    Text(preview).foregroundStyle(.secondary).lineLimit(1)
+                    Text("·").foregroundColor(.tertiary)
+                    Text(preview).foregroundColor(.secondary).lineLimit(1)
                 }
                 Spacer(minLength: 8)
             }

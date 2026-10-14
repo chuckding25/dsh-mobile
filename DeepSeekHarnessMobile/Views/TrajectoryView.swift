@@ -407,7 +407,7 @@ private struct TrajectoryRow: View {
                         .lineLimit(1)
                 }
                 Spacer()
-                Text("#\(node.startSeq)").font(.caption2.monospaced()).foregroundStyle(.secondary)
+                Text("#\(node.startSeq)").font(.caption2.monospaced()).foregroundColor(.secondary)
                 Image(systemName: "chevron.right").font(.caption2).foregroundStyle(.tertiary)
             }
             .frame(height: 20)
@@ -758,7 +758,7 @@ private struct EventDetailSheet: View {
                         .fixedSize(horizontal: false, vertical: true)
                 }
                 if let parameters = schema["parameters"] {
-                    Text("Parameters").font(.subheadline.weight(.semibold)).foregroundStyle(.secondary)
+                    Text("Parameters").font(.subheadline.weight(.semibold)).foregroundColor(.secondary)
                     jsonCode(parameters)
                 }
             }
@@ -787,7 +787,7 @@ private struct EventDetailSheet: View {
 
     private func tokenUsageSection(_ title: String, usage: RequestTokenUsage?) -> some View {
         VStack(alignment: .leading, spacing: 9) {
-            Text(title).font(.headline).foregroundStyle(.secondary)
+            Text(title).font(.headline).foregroundColor(.secondary)
             detailRow("Input", "\(usage?.totalInput ?? 0) tok")
             detailRow("Cached", "\(usage?.cachedInput ?? 0) tok", indented: true)
             detailRow("Other", "\(usage?.uncachedInput ?? 0) tok", indented: true)
@@ -804,7 +804,7 @@ private struct EventDetailSheet: View {
     }
 
     private func unavailable(_ text: String) -> some View {
-        Text(text).font(.subheadline).foregroundStyle(.secondary)
+        Text(text).font(.subheadline).foregroundColor(.secondary)
     }
 
     private var summaryView: some View {
@@ -946,7 +946,7 @@ private struct EventDetailSheet: View {
 
     private func previewSection(_ title: String, text: String, compact: Bool = false) -> some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text(title).font(.headline).foregroundStyle(.secondary)
+            Text(title).font(.headline).foregroundColor(.secondary)
             MarkdownContent(text, compact: compact)
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
@@ -1032,11 +1032,11 @@ private struct EventDetailSheet: View {
     private func detailRow(_ label: String, _ value: String, indented: Bool = false) -> some View {
         HStack(alignment: .firstTextBaseline, spacing: 12) {
             Text(label)
-                .foregroundStyle(.secondary)
+                .foregroundColor(.secondary)
                 .padding(.leading, indented ? 16 : 0)
                 .frame(width: 158, alignment: .leading)
             Text(value)
-                .foregroundStyle(.primary)
+                .foregroundColor(.primary)
                 .textSelection(.enabled)
             Spacer(minLength: 0)
         }
